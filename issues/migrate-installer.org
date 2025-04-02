@@ -1,0 +1,127 @@
+#+TITLE: Investigation: /migrate-installer Command in Claude Code
+#+AUTHOR: jwalsh
+#+DATE: 2025-04-02
+
+* Issue Description
+
+The ~/migrate-installer~ command in Claude Code has been introduced to help transition from global npm installations to local installations, but has several issues on FreeBSD systems.
+
+** Symptoms
+
+- Local installation succeeds but produces a non-executable file
+- Error message: ~-bash: /home/jwalsh/.claude/local/claude: cannot execute: required file not found~
+- The file exists with proper permissions but fails to execute on FreeBSD
+
+** Environment
+
+- Operating System: FreeBSD 14.2-RELEASE
+- Architecture: amd64
+- Node.js version: v22.13.1
+- Bash version: GNU bash 5.2.37(0)-release (amd64-portbld-freebsd14.1)
+- Claude Code version: 0.2.56
+
+* Research Findings
+
+** Command History
+
+Based on GitHub issues and package version research, the ~/migrate-installer~ command appears to have been introduced around version 0.2.48, as evidenced by issue #567 where a user reported the command was mentioned but not available.
+
+The issue was reported with version 0.2.48 which suggests the command was being referenced in error messages or documentation before it was fully implemented.
+
+** Related GitHub Issues
+
+- Issue #567: "Missing `/migrate-installer` Command in CLI"
+  - User reported version 0.2.48 suggesting to use the command
+  - Platform: macOS
+  - Terminal: WarpTerminal
+
+- No closed issues specifically addressing ~/migrate-installer~ implementation were found
+
+** Command Purpose
+
+The ~/migrate-installer~ command was introduced to help users transition from problematic global npm installations to more secure local installations. This addresses permission issues that occur when:
+
+1. npm global prefix is not user-writable (e.g., /usr or /usr/local)
+2. Users need to run with elevated permissions (sudo)
+
+** Current Behavior
+
+When running ~/migrate-installer~:
+
+1. A local installation is created at ~/.claude/local/
+2. An alias is added to the user's shell configuration
+3. The globally installed npm package is removed
+4. On FreeBSD, the resulting executable fails to run
+
+* Technical Analysis
+
+** File Structure
+
+- The local installation creates ~/.claude/local/claude
+- File permissions are correctly set: -rwxr-xr-x
+- The file is owned by the correct user
+- The file is 75 bytes in size
+
+** Working Components
+
+The underlying script at ~/home/jwalsh/.claude/local/node_modules/@anthropic-ai/claude-code/claude-restart.sh~ does work correctly when executed directly.
+
+** Shell Scripts Analysis
+
+Found shebangs in the codebase:
+- cli.js: ~#!/usr/bin/env -S node --no-warnings --enable-source-maps~
+- claude-restart.sh: ~#!/usr/bin/env bash~
+
+The issue likely stems from platform-specific assumptions in the local wrapper script that don't account for FreeBSD's environment.
+
+* Workarounds
+
+** Method 1: Direct Invocation
+
+Create an alias that directly calls the working script:
+
+#+BEGIN_SRC bash
+alias claude="/home/jwalsh/.claude/local/node_modules/@anthropic-ai/claude-code/claude-restart.sh"
+#+END_SRC
+
+** Method 2: Custom Wrapper Script
+
+Create a custom wrapper script in ~/bin:
+
+#+BEGIN_SRC bash
+# Create the directory if it doesn't exist
+mkdir -p ~/bin
+
+# Create a wrapper script
+cat > ~/bin/claude << 'EOF'
+#!/usr/bin/env bash
+exec /home/jwalsh/.claude/local/node_modules/@anthropic-ai/claude-code/claude-restart.sh "$@"
+EOF
+
+# Make it executable
+chmod +x ~/bin/claude
+
+# Add to PATH if needed
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+#+END_SRC
+
+* Next Steps
+
+** Version Audit
+
+Continue investigating versions to determine:
+- When ~/doctor~ command was added
+- When ~/migrate-installer~ was actually implemented (beyond just being referenced)
+- Whether platform-specific code in the installer accounts for BSD systems
+
+** Potential Solution
+
+A proper fix would likely involve:
+1. Updating the local installer to account for FreeBSD paths and environment
+2. Adding BSD compatibility to the migration scripts
+3. Testing installation on multiple BSD variants
+
+** Further Documentation
+
+Document the findings in the GitHub issue tracker to help others facing similar issues on BSD systems.

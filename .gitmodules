@@ -1,0 +1,3 @@
+[submodule "claude-code-repo"]
+	path = claude-code-repo
+	url = https://github.com/anthropics/claude-code

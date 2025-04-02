@@ -1,0 +1,60 @@
+#+TITLE: Claude Code Audit Toolkit
+#+AUTHOR: jwalsh
+#+DATE: 2025-04-02
+
+* Claude Code Version Audit
+
+** Background
+
+This repository provides tools for auditing npm packages to track feature additions, changes, and investigate issues.
+
+The initial investigation focuses on when specific commands (~/doctor~ and ~/migrate-installer~) were added to the Claude Code npm package.
+
+** Current Issue Investigation
+
+We're currently investigating an issue where the ~/migrate-installer~ command in Claude Code fails on FreeBSD systems:
+
+- The local installation process runs but results in a non-functioning executable
+- Error message: ~-bash: /home/jwalsh/.claude/local/claude: cannot execute: required file not found~
+- The file exists and has execute permissions, but cannot be executed on FreeBSD
+- The issue may be related to compatibility differences between Linux/macOS and FreeBSD
+
+Reference:
+- Issue #567 on GitHub (Missing ~/migrate-installer~ Command in CLI)
+- 0.2.48 mentioned as a version that prompts use of this command
+
+** Usage
+
+*** Setup
+#+BEGIN_SRC bash
+make init
+#+END_SRC
+
+*** Run the Audit
+#+BEGIN_SRC bash
+make audit
+#+END_SRC
+
+*** Refresh Submodules
+#+BEGIN_SRC bash
+make refresh
+#+END_SRC
+
+*** Clean Up
+#+BEGIN_SRC bash
+make clean
+#+END_SRC
+
+** Notes
+
+- The audit script downloads and extracts multiple versions of the package to track when features were added
+- For FreeBSD compatibility, all scripts use #!/usr/bin/env bash instead of direct paths
+- The repo includes the official anthropics/claude-code repository as a submodule for reference
+
+** Additional Investigations
+
+This toolkit can be extended to audit other npm packages or investigate different issues:
+
+1. Edit the versions array in the audit script to target different package versions
+2. Modify the grep patterns to search for other features or changes of interest
+3. Extend the Makefile with additional analysis tools as needed

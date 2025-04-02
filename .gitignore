@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules/
+
+# Package downloads and extractions
+versions/
+*.tgz
+
+# Build outputs
+dist/
+build/
+
+# Environment variables
+.env
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
