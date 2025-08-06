@@ -1,0 +1,32 @@
+Documentation Enhancement Commit
+
+This commit adds significant documentation improvements to the Claude Code version audit project:
+
+1. Control Flow Documentation (claude-code-control-flow.md):
+   - Comprehensive Mermaid diagrams showing Claude Code's internal architecture
+   - Main control flow from CLI entry to tool execution
+   - Authentication flow with config precedence
+   - Tool execution lifecycle and restart mechanisms
+   - Configuration management patterns
+   - MCP server integration flows
+
+2. Feature Overview (claude-code-features.org):
+   - Detailed feature catalog across analyzed versions
+   - OpenTelemetry support documentation
+   - Slash command system overview
+   - Platform support matrix
+   - Known issues and limitations
+   - Security and performance features
+
+3. Version Metadata Script (fetch-version-metadata.sh):
+   - Automated script for fetching NPM release metadata
+   - Download statistics retrieval
+   - Version timeline analysis support
+   - FreeBSD-compatible bash scripting
+
+4. Repository Cleanup:
+   - Enhanced .gitignore for temporary files
+   - Removed editor backup files
+   - Improved repository hygiene
+
+These additions provide comprehensive reference material for understanding Claude Code's evolution and current capabilities.
