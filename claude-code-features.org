@@ -1,0 +1,194 @@
+#+TITLE: Claude Code Features Overview
+#+AUTHOR: Claude Code Version Audit
+#+DATE: 2025-07-15
+#+OPTIONS: toc:2
+
+* Overview
+
+Claude Code is Anthropic's official CLI tool for interacting with Claude AI models. This document outlines the key features and capabilities identified through version analysis.
+
+* Core Features
+
+** Authentication and API Management
+- API key configuration with multiple scopes (local, user, project)
+- Environment variable support for API keys
+- Secure storage in JSON configuration files
+- Project-specific configuration support
+
+** Interactive Mode
+- REPL (Read-Eval-Print Loop) for continuous interaction
+- React-based UI using Ink framework
+- Real-time output rendering
+- Session state persistence with resume functionality
+
+** Command-Line Interface
+- Built on Commander.js for robust argument parsing
+- Support for both interactive and command modes
+- Comprehensive help system
+- Platform-specific binary distribution
+
+* Advanced Features
+
+** OpenTelemetry (OTEL) Support
+- Telemetry tracking for performance monitoring
+- Event tracking with ~tengu_*~ namespace
+- Command execution metrics
+- Error tracking and reporting
+- Performance instrumentation
+
+** Keyboard Controls and Blocking
+- ESC key handling for command interruption
+- Proper signal handling (SIGINT, SIGTERM)
+- Clean exit with resource cleanup
+- TTY detection for appropriate output handling
+- Special exit codes for restart scenarios
+
+** Slash Commands System
+- ~/help~ - Display available commands and keyboard shortcuts
+- ~/init~ - Initialize CLAUDE.md documentation
+- ~/doctor~ - Check installation health
+- ~/migrate-installer~ - Migrate from global to local installation
+- ~/mcp~ - MCP server status and management
+- ~/pr-comments~ - Fetch GitHub PR comments
+- Dynamic command loading system
+- Commands can be enabled/disabled via configuration
+
+** Model Context Protocol (MCP) Support
+- Server management commands
+- Configuration stored in ~.mcp.json~
+- Support for multiple MCP servers
+- Server status monitoring
+- Integration with project workflows
+
+* Configuration Management
+
+** Multi-Level Configuration
+- Local (~.claude.json~ in current directory)
+- User (~$HOME/.config/claude.json~)
+- Project (project-specific paths)
+- Configuration precedence system
+
+** Configuration Commands
+- ~config get~ - Retrieve configuration values
+- ~config set~ - Set configuration values
+- ~config remove~ - Delete configuration entries
+- ~config list~ - Show all configurations
+- ~config add~ - Add to array configurations
+
+* Tool Integration
+
+** Built-in Tools
+- File system operations (read, write, edit)
+- Web fetching and searching
+- Task management (TodoRead, TodoWrite)
+- Code execution (Bash)
+- Pattern matching (Glob, Grep)
+- Notebook editing support
+
+** External Tool Support
+- Ripgrep integration for fast searching
+- Platform-specific binary management
+- WebAssembly support (yoga.wasm for layout)
+- Sharp for image processing
+
+* Auto-Update System
+
+** Update Mechanisms
+- Automatic update checking
+- Version comparison logic
+- Permission-aware installation
+- Migration from global to local installations
+- Update notifications
+
+** Installation Management
+- ~/doctor~ command for health checks
+- ~/migrate-installer~ for permission-free updates
+- Local installation support
+- Platform-specific considerations
+
+* Platform Support
+
+** Officially Supported
+- macOS (Intel and Apple Silicon)
+- Linux (x86_64 and ARM64)
+
+** Limited Support
+- FreeBSD (compatibility issues with local installation)
+
+** Not Supported
+- Windows (blocked with preinstall check)
+
+* Restart and Recovery
+
+** Exit Code Handling
+- Exit code 42: Restart with "resume 0"
+- Exit code 43: Tool-based restart
+- Wrapper script (~claude-restart.sh~) manages restarts
+- Session persistence across restarts
+
+** Error Recovery
+- Graceful error handling
+- Clean resource cleanup
+- Session state preservation
+- Automatic retry mechanisms
+
+* Developer Features
+
+** Documentation Support
+- CLAUDE.md file initialization
+- Project-specific instructions
+- Global user instructions (~$HOME/.claude/CLAUDE.md~)
+- Hierarchical instruction system
+
+** GitHub Integration
+- PR comment fetching
+- Issue tracking support
+- Repository context awareness
+- Git operation support
+
+* Security Features
+
+** API Key Management
+- Secure storage in configuration files
+- Environment variable support
+- No hardcoded credentials
+- Scoped access control
+
+** Process Isolation
+- Separate process for each tool execution
+- Clean environment handling
+- Resource limitation support
+- Signal propagation
+
+* Performance Features
+
+** Optimization Strategies
+- Code bundling and minification
+- Lazy loading of commands
+- Efficient file operations
+- Stream-based processing
+
+** Monitoring and Metrics
+- OTEL integration for performance tracking
+- Command execution timing
+- Resource usage monitoring
+- Error rate tracking
+
+* Known Issues and Limitations
+
+** Interactive Command Limitations
+- Issues with commands requiring TTY input (git commit -i, sudo)
+- Referenced in issue #619
+- Affects interactive git operations
+- Workaround: use non-interactive alternatives
+
+** Platform-Specific Issues
+- FreeBSD local installation compatibility
+- Windows platform blocking
+- Binary distribution challenges
+
+** Version Migration Challenges
+- ~/migrate-installer~ command was referenced before implementation
+- Appeared in error messages around v0.2.48
+- Properly implemented around v0.2.50
+- Migration tracking in configuration
