@@ -7,6 +7,11 @@ cd versions
 
 # Download key versions
 VERSIONS=(
+  # Big jump versions from 1.x series
+  "1.0.67"  # Download anomaly - 1M+ downloads
+  "1.0.0"   # Stable release transition
+  
+  # Original 0.2.x series for comparison
   "0.2.56"
   "0.2.57"
   "0.2.54"
