@@ -7,19 +7,20 @@ cd versions
 
 # Download key versions
 VERSIONS=(
-  # Big jump versions from 1.x series
-  "1.0.67"  # Download anomaly - 1M+ downloads
-  "1.0.0"   # Stable release transition
+  # Evolution from 1.0.0 to SDK in 1.0.67
+  "1.0.0"   # Stable release baseline (1,596 downloads)
+  "1.0.10"  # Early milestone (1,208 downloads)
+  "1.0.24"  # First spike (2,866 downloads)
+  "1.0.31"  # Growing adoption (5,247 downloads)
+  "1.0.44"  # Steady growth (3,298 downloads)
+  "1.0.51"  # Peak before jump (5,738 downloads)
+  "1.0.64"  # MASSIVE JUMP (855,924 downloads)
+  "1.0.65"  # Sustained high (855,230 downloads)
+  "1.0.67"  # SDK release (1,018,483 downloads)
   
   # Original 0.2.x series for comparison
   "0.2.56"
   "0.2.57"
-  "0.2.54"
-  "0.2.50"
-  "0.2.48"
-  "0.2.46"
-  "0.2.45"
-  "0.2.41"
   "0.2.18"
 )
 
